@@ -11,4 +11,6 @@ void copy_dir(char *source, char* dest);
 
 void copy_dir_wrapper(char* source, char* dest);
 
+void remove_dir(char* source);
+
 #endif

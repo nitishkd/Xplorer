@@ -101,3 +101,39 @@ void copy_dir_wrapper(char* source, char* dest)
 	copy_dir(source, mdir);
 	closedir(dp);
 }
+
+void remove_dir(char* source)
+{
+	DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+    if((dp = opendir(source)) == NULL) 
+        return;
+	
+	chdir(source);
+	while((entry = readdir(dp)) != NULL) 
+    {
+		lstat(entry->d_name,&statbuf);
+		char *new_source;
+		new_source = (char*)malloc(strlen(source) + 1 + 1 + strlen(entry->d_name));
+		strcpy(new_source, source);
+		strcat(new_source, "/");
+		strcat(new_source, entry->d_name);
+
+        if(S_ISDIR(statbuf.st_mode)) 
+        {
+            if(strcmp(".",entry->d_name) == 0 || strcmp("..",entry->d_name) == 0)
+                continue;
+
+            remove_dir(new_source);
+        }
+        else
+		{
+			removefile(new_source);
+		}
+    }
+	rmdir(source);
+    chdir("..");
+    closedir(dp);
+
+}

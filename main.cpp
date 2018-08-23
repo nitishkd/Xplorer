@@ -3,6 +3,7 @@
 
 int main()
 {
-    copy_dir_wrapper("/home/nitish/code/college", "/home/nitish");
+    //copy_dir_wrapper("/home/nitish/code/college", "/home/nitish");
+    remove_dir("/home/nitish/Desktop/project");
     return 0;
 }
