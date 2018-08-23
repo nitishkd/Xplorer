@@ -31,7 +31,6 @@ void movefile(char* source, char* destination)
 	removefile(source);
 }
 
-
 void copy_dir(char *source, char* dest)
 {
     DIR *dp;
@@ -70,4 +69,35 @@ void copy_dir(char *source, char* dest)
     }
     chdir("..");
     closedir(dp);
+}
+
+void copy_dir_wrapper(char* source, char* dest)
+{
+	DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+    if((dp = opendir(source)) == NULL) 
+        return;
+	
+	lstat(source,&statbuf);
+	int n = strlen(source);
+	int i;
+	for(i =n-1; i >= 0; --i)
+	{
+		if(source[i] == '/')
+			break;
+	}
+	char dirname[n-i];
+	for(int j = i+1; j < n; ++j)
+		dirname[j-i-1] = source[j];
+
+	char* mdir;
+	mdir = (char *)malloc(strlen(dest)+1+1+strlen(dirname));
+	strcpy(mdir, dest);
+	strcat(mdir, "/");
+	strcat(mdir, dirname);
+
+	mkdir(mdir, statbuf.st_mode);
+	copy_dir(source, mdir);
+	closedir(dp);
 }

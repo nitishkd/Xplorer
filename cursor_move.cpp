@@ -7,6 +7,9 @@
 #define cursorbackward(x) printf("\033[%dD", (x))
 #define cursorup(x) printf("\033[%dA", (x))
 #define cursordown(x) printf("\033[%dB", (x))
+#define clear() printf("\033[H\033[J")
+#define clearprev() printf("\033[3J")
+
 
 #define KEY_ESCAPE  0x001b
 #define KEY_ENTER   0x000a
@@ -95,7 +98,8 @@ static int kbget(void)
 int main(void)
 {
     int c;
-
+    clear();
+    clearprev();
     while (1) {
         c = kbget();
         // if (c == KEY_ENTER || c == KEY_ESCAPE || c == KEY_UP || c == KEY_DOWN) {

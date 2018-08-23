@@ -9,4 +9,6 @@ void movefile(char* source, char* destination);
 
 void copy_dir(char *source, char* dest);
 
+void copy_dir_wrapper(char* source, char* dest);
+
 #endif
