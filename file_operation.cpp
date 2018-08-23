@@ -137,3 +137,9 @@ void remove_dir(char* source)
     closedir(dp);
 
 }
+
+void move_dir(char* source, char* dest)
+{
+	copy_dir_wrapper(source, dest);
+	remove_dir(source);
+}
