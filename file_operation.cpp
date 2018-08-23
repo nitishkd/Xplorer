@@ -2,6 +2,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <dirent.h>
+#include <string.h>
+#include <sys/stat.h>
+
 #include "file_operation.h"
 
 void copyfile(char* filename, char* outfilename )
@@ -25,4 +29,45 @@ void movefile(char* source, char* destination)
 {
 	copyfile(source, destination);
 	removefile(source);
+}
+
+
+void copy_dir(char *source, char* dest)
+{
+    DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+    if((dp = opendir(source)) == NULL) 
+        return;
+	
+	lstat(source,&statbuf);
+	mkdir(dest, statbuf.st_mode);
+	chdir(source);
+	while((entry = readdir(dp)) != NULL) 
+    {
+		lstat(entry->d_name,&statbuf);
+		char *new_source, *new_dest;
+		new_source = (char*)malloc(strlen(source) + 1 + 1 + strlen(entry->d_name));
+		strcpy(new_source, source);
+		strcat(new_source, "/");
+		strcat(new_source, entry->d_name);
+		new_dest = (char*)malloc(strlen(dest) + 1 + 1 + strlen(entry->d_name));
+		strcpy(new_dest, dest);
+		strcat(new_dest, "/");
+		strcat(new_dest, entry->d_name);
+		
+        if(S_ISDIR(statbuf.st_mode)) 
+        {
+            if(strcmp(".",entry->d_name) == 0 || strcmp("..",entry->d_name) == 0)
+                continue;
+
+            copy_dir(new_source,new_dest);
+        }
+        else
+		{
+			copyfile(new_source, new_dest);
+		}
+    }
+    chdir("..");
+    closedir(dp);
 }

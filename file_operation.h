@@ -7,4 +7,6 @@ int removefile(char* filename);
 
 void movefile(char* source, char* destination);
 
+void copy_dir(char *source, char* dest);
+
 #endif
