@@ -110,7 +110,7 @@ vector<FS> ls_dir(char* dir)
     return Dirlist;
 }
 
-void ls_dir_wrapper(char* source)
+vector<FS> ls_dir_wrapper(char* source)
 {
     vector<FS> Listdir = ls_dir(source);
     sort(Listdir.begin(), Listdir.end(), comparator);
@@ -118,4 +118,5 @@ void ls_dir_wrapper(char* source)
     for(int i = 0; i < Listdir.size(); ++i)
         printf(" %s     %s      %s     %ld Bytes       %.30s\n",Listdir[i].permission, Listdir[i].u_name ,Listdir[i].dateStr, Listdir[i].FileSize, Listdir[i].FName);
     
+    return Listdir;
 }

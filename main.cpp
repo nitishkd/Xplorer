@@ -11,7 +11,7 @@ int main()
     clear_util();
     
     int c;
-    ls_dir_wrapper("/home/nitish/code/college/OS/");
+    vector<FS> DirList = ls_dir_wrapper("/home/nitish/code/college/OS/");
 
     while (true) 
     {
