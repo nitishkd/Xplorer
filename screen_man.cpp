@@ -3,32 +3,13 @@
 #include <termios.h>
 #include <unistd.h>
 
-#define cursorforward(x) printf("\033[%dC", (x))
-#define cursorbackward(x) printf("\033[%dD", (x))
-#define cursorup(x) printf("\033[%dA", (x))
-#define cursordown(x) printf("\033[%dB", (x))
-#define clear() printf("\033[H\033[J")
-#define clearprev() printf("\033[3J")
+#include "screen_man.h"
 
+struct termios term, oterm;
 
-#define KEY_ESCAPE  0x001b
-#define KEY_ENTER   0x000a
-#define KEY_UP      0x0105
-#define KEY_DOWN    0x0106
-#define KEY_LEFT    0x0107
-#define KEY_RIGHT   0x0108
-
-static struct termios term, oterm;
-
-static int getch(void);
-static int kbhit(void);
-static int kbesc(void);
-static int kbget(void);
-
-static int getch(void)
+int getch(void)
 {
     int c = 0;
-
     tcgetattr(0, &oterm);
     memcpy(&term, &oterm, sizeof(term));
     term.c_lflag &= ~(ICANON | ECHO);
@@ -40,10 +21,9 @@ static int getch(void)
     return c;
 }
 
-static int kbhit(void)
+int kbhit(void)
 {
     int c = 0;
-
     tcgetattr(0, &oterm);
     memcpy(&term, &oterm, sizeof(term));
     term.c_lflag &= ~(ICANON | ECHO);
@@ -56,7 +36,7 @@ static int kbhit(void)
     return ((c != -1) ? 1 : 0);
 }
 
-static int kbesc(void)
+int kbesc(void)
 {
     int c;
 
@@ -87,7 +67,7 @@ static int kbesc(void)
     return c;
 }
 
-static int kbget(void)
+int kbget(void)
 {
     int c;
 
@@ -95,29 +75,8 @@ static int kbget(void)
     return (c == KEY_ESCAPE) ? kbesc() : c;
 }
 
-int main(void)
+void clear_util()
 {
-    int c;
     clear();
     clearprev();
-    while (1) {
-        c = kbget();
-        // if (c == KEY_ENTER || c == KEY_ESCAPE || c == KEY_UP || c == KEY_DOWN) {
-        //     break;
-        // }
-        
-        if (c == KEY_RIGHT) 
-            cursorbackward(1);
-        else if (c == KEY_LEFT)
-            cursorforward(1);
-        else if(c == KEY_UP)
-        	cursorup(1);
-        else if(c == KEY_DOWN)
-        	cursordown(1);
-        else {
-            putchar(c);
-        }
-    }
-    printf("\n");
-    return 0;
 }
