@@ -6,8 +6,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pwd.h>
-
+#include <vector>
+#include <string>
 #include "dir_traverse.h"
+
+using namespace std;
 
 void ls_subtree(char *dir, int depth)
 {
@@ -54,31 +57,55 @@ void permission_str(struct stat filestat, char* perm)
 }
 
 
-void ls_dir(char* dir)
+vector<FS> ls_dir(char* dir)
 {
+    vector<FS> Dirlist;
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
     if((dp = opendir(dir)) == NULL) 
     {
         fprintf(stderr,"cannot open directory: %s\n", dir);
-        return;
+        return Dirlist;
     }
     
     chdir(dir);
     while((entry = readdir(dp)) != NULL) 
     {
         char date[10];
-
         lstat(entry->d_name,&statbuf);
         strftime(date, 10, "%d-%m-%y", localtime(&(statbuf.st_ctime)));
-        char permission[10];
+        char permission[11];
         permission_str(statbuf, permission);
         struct passwd *pwd;
         pwd = getpwuid(statbuf.st_uid);
-        printf(" %s     %s      %s     %ld Bytes       %.20s\n",permission, pwd->pw_name ,date, statbuf.st_size, entry->d_name);
+        FS dir_file;
+
+        dir_file.dateStr = (char*)malloc(strlen(date)+1);
+        strcpy(dir_file.dateStr, date);
+        
+        dir_file.permission = (char*)malloc(strlen(permission)+1);
+        strcpy(dir_file.permission, permission);
+
+        dir_file.u_name = (char*)malloc(strlen(pwd->pw_name)+1);
+        strcpy(dir_file.u_name, pwd->pw_name);
+
+        dir_file.FileSize = statbuf.st_size;
+        
+        dir_file.FName = (char*)malloc(strlen(entry->d_name)+1);
+        strcpy(dir_file.FName, entry->d_name);
+
+        Dirlist.push_back(dir_file);
+        
     }
     chdir("..");
     closedir(dp);
+    return Dirlist;
 }
 
+void print_dir(vector<FS> Listdir)
+{
+    for(int i = 0; i < Listdir.size(); ++i)
+        printf(" %s     %s      %s     %ld Bytes       %.30s\n",Listdir[i].permission, Listdir[i].u_name ,Listdir[i].dateStr, Listdir[i].FileSize, Listdir[i].FName);
+    
+}

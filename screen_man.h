@@ -6,7 +6,7 @@
 #define cursorbackward(x) printf("\033[%dD", (x))
 #define cursorup(x) printf("\033[%dA", (x))
 #define cursordown(x) printf("\033[%dB", (x))
-#define clear() printf("\033[H\033[J")
+#define clearscr() printf("\033[H\033[J")
 #define clearprev() printf("\033[3J")
 
 

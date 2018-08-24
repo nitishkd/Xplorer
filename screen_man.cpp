@@ -77,6 +77,6 @@ int kbget(void)
 
 void clear_util()
 {
-    clear();
+    clearscr();
     clearprev();
 }
