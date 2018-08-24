@@ -9,8 +9,15 @@
 #include <vector>
 #include <string>
 #include "dir_traverse.h"
-
+#include <bits/stdc++.h>
 using namespace std;
+
+
+bool comparator(FS a, FS b)
+{
+    return (strcmp(a.FName ,b.FName) < 0 );
+}
+
 
 void ls_subtree(char *dir, int depth)
 {
@@ -103,8 +110,11 @@ vector<FS> ls_dir(char* dir)
     return Dirlist;
 }
 
-void print_dir(vector<FS> Listdir)
+void ls_dir_wrapper(char* source)
 {
+    vector<FS> Listdir = ls_dir(source);
+    sort(Listdir.begin(), Listdir.end(), comparator);
+
     for(int i = 0; i < Listdir.size(); ++i)
         printf(" %s     %s      %s     %ld Bytes       %.30s\n",Listdir[i].permission, Listdir[i].u_name ,Listdir[i].dateStr, Listdir[i].FileSize, Listdir[i].FName);
     

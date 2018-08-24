@@ -19,6 +19,6 @@ void permission_str(struct stat filestat, char* perm);
 
 std::vector<FS> ls_dir(char* dir);
 
-void print_dir(std::vector<FS> Listdir);
+void ls_dir_wrapper(char* source);
 
 #endif

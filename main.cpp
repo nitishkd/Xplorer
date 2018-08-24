@@ -6,19 +6,12 @@
 #include <string.h>
 using namespace std;
 
-bool comparator(FS a, FS b)
-{
-    return a.FName > b.FName;
-}
-
 int main()
 {
     clear_util();
     
     int c;
-    vector<FS> ListDir = ls_dir("/home/nitish/Documents");
-    sort(ListDir.begin(), ListDir.end(), comparator);
-    print_dir(ListDir);
+    ls_dir_wrapper("/home/nitish/code/college/OS/");
 
     while (true) 
     {
