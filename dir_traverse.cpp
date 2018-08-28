@@ -19,6 +19,13 @@ bool comparator(FS a, FS b)
     a.FName < b.FName;
 }
 
+std::string GetCurrentWorkingDir() 
+{
+  char buff[FILENAME_MAX];
+  getcwd( buff, FILENAME_MAX );
+  std::string current_working_dir(buff);
+  return current_working_dir;
+}
 
 void ls_subtree(string dir)
 {
@@ -83,7 +90,6 @@ vector<FS> ls_dir(string dir)
         fprintf(stderr,"cannot open directory: %s\n", dir);
         return Dirlist;
     }
-    cout<<dir<<endl;
     chdir(dir.c_str());
 
     while((entry = readdir(dp)) != NULL) 
@@ -122,8 +128,10 @@ vector<FS> ls_dir_wrapper(string source)
     clear_util();
     vector<FS> Listdir = ls_dir(source);
     sort(Listdir.begin(), Listdir.end(), comparator);
+    printf("%s \n", GetCurrentWorkingDir().c_str());
     for(int i = 0; i < Listdir.size(); ++i)
         printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
     
     return Listdir;
 }
+

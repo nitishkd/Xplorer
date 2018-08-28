@@ -15,10 +15,13 @@ struct FS
 
 void ls_subtree(std::string dir);
 
+std::string GetCurrentWorkingDir();
+
 void permission_str(struct stat filestat, char* perm);
 
 std::vector<FS> ls_dir(std::string dir);
 
 std::vector<FS> ls_dir_wrapper(std::string source);
+
 
 #endif

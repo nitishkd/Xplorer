@@ -9,12 +9,6 @@
 #include <sys/stat.h>
 using namespace std;
 
-std::string GetCurrentWorkingDir() {
-  char buff[FILENAME_MAX];
-  getcwd( buff, FILENAME_MAX );
-  std::string current_working_dir(buff);
-  return current_working_dir;
-}
 
 stack<string> STF, STB;
 
@@ -112,7 +106,7 @@ int main()
             }
             continue;
         }
-        if(c == 127)
+        if(c == 104)
         {   
             string fname = homedir;
             STB.push(GetCurrentWorkingDir());
@@ -121,6 +115,19 @@ int main()
             DirList.clear();
             DirList = ls_dir_wrapper(fname);
             cur_path = homedir;
+            cursorup(DirList.size());
+            continue;
+        }
+        if(c == 127)
+        {
+            string fname = GetCurrentWorkingDir();
+            if(fname == homedir)
+                continue;
+            STB.push(fname);
+            fname += "/..";
+            DirList.clear();
+            DirList = ls_dir_wrapper(fname);
+            cur_path = GetCurrentWorkingDir();
             cursorup(DirList.size());
             continue;
         }
@@ -218,6 +225,7 @@ int main()
             cursorup(DirList.size());
             continue;
         }
+
 
     }
 
