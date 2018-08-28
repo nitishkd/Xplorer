@@ -16,8 +16,8 @@ stack<string> STF, STB;
 
 int main()
 {
+    freopen("/dev/null", "w", stderr);
     int c,nrow, ncol,start, end;
-    
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     nrow = w.ws_row;
@@ -180,10 +180,26 @@ int main()
             c = kbget();
             if(command == "snapshot")
             {
-                ls_subtree(GetCurrentWorkingDir().c_str());
+                string folder,fname,name;
+                cin>>folder;
+                c = kbget();
+                cin>>fname;
+                c = kbget();
+                name = folder+"/"+fname;
+                fstream file;
+                file.open(name.c_str(), ios::out);
+                string line;
+                streambuf* stream_buffer_cout = cout.rdbuf();
+                streambuf* stream_buffer_cin = cin.rdbuf();
+                streambuf* stream_buffer_file = file.rdbuf();
+                cout.rdbuf(stream_buffer_file);
+                ls_subtree(folder);
+                cout.rdbuf(stream_buffer_cout);
+                file.close();
                 sleep(5);
+                
             }
-            if(command == "cp")
+            else if(command == "cp")
             {
                 string source, dest;
                 cin>>source;
@@ -196,7 +212,7 @@ int main()
                 copyfile(sname, dname);
                 sleep(2);
             }
-            if(command == "cp-r")
+            else if(command == "cp-r")
             {
                 string source, dest;
                 cin>>source;
@@ -209,7 +225,7 @@ int main()
                 copy_dir_wrapper(sname, dname);
                 sleep(2);
             }
-            if(command == "rm-r")
+            else if(command == "rm-r")
             {
                 string source;
                 cin>>source;
@@ -219,7 +235,7 @@ int main()
                 remove_dir(name);
                 sleep(2);
             }
-            if(command == "rm")
+            else if(command == "rm")
             {
                 string source;
                 cin>>source;
@@ -229,7 +245,7 @@ int main()
                 removefile(name);
                 sleep(2);
             }
-            if(command == "mv")
+            else if(command == "mv")
             {
                 string source, dest;
                 cin>>source;
@@ -242,7 +258,7 @@ int main()
                 movefile(sname, dname);
                 sleep(2);
             }
-            if(command == "mv-r")
+            else if(command == "mv-r")
             {
                 string source, dest;
                 cin>>source;
@@ -255,7 +271,11 @@ int main()
                 move_dir(sname, dname);
                 sleep(2);
             }
-            if(command == "quit")
+            else if(command == "search")
+            {
+                //TODO
+            }
+            else if(command == "quit")
                 return 0;
 
             DirList.clear();

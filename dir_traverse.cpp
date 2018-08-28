@@ -56,9 +56,9 @@ void ls_subtree(string dir)
     }
     cout<<dir<<endl;
     for(int i =0; i < fname.size(); ++i)
-        printf("%10s ", fname[i].c_str());
-    printf("\n");
-    printf("\n");
+         cout<<fname[i].c_str()<<"          ";
+    cout<<endl;
+    cout<<endl;
     chdir("..");
     closedir(dp);
 }
