@@ -24,6 +24,7 @@ int main()
 {
     int c,nrow, ncol;
     string cur_path = GetCurrentWorkingDir() ;
+    string homedir = cur_path;
     vector<FS> DirList = ls_dir_wrapper(cur_path);
     int position = 0;    
     cursorup(DirList.size());
@@ -111,7 +112,19 @@ int main()
             }
             continue;
         }
-        
+        if(c == 127)
+        {   
+            string fname = homedir;
+            STB.push(GetCurrentWorkingDir());
+            while(!STF.empty())
+                STF.pop();
+                
+            DirList.clear();
+            DirList = ls_dir_wrapper(fname);
+            cur_path = homedir;
+            cursorup(DirList.size());
+            continue;
+        }
 
     }
 
