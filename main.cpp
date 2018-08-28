@@ -118,10 +118,103 @@ int main()
             STB.push(GetCurrentWorkingDir());
             while(!STF.empty())
                 STF.pop();
-                
             DirList.clear();
             DirList = ls_dir_wrapper(fname);
             cur_path = homedir;
+            cursorup(DirList.size());
+            continue;
+        }
+        if(c == 58)
+        {
+            cursordown(nrow);
+            cout<<":";
+            string command;
+            cin>>command;
+            string curdir = GetCurrentWorkingDir();
+            c = kbget();
+            if(command == "snapshot")
+            {
+                ls_subtree(GetCurrentWorkingDir().c_str());
+                sleep(5);
+            }
+            if(command == "cp")
+            {
+                string source, dest;
+                cin>>source;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                char sname[2048], dname[2048];
+                strcpy(sname, source.c_str());
+                strcpy(dname, dest.c_str());
+                copyfile(sname, dname);
+                sleep(2);
+            }
+            if(command == "cp-r")
+            {
+                string source, dest;
+                cin>>source;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                char sname[2048], dname[2048];
+                strcpy(sname, source.c_str());
+                strcpy(dname, dest.c_str());
+                copy_dir_wrapper(sname, dname);
+                sleep(2);
+            }
+            if(command == "rm-r")
+            {
+                string source;
+                cin>>source;
+                c = kbget();
+                char name[2048];
+                strcpy(name, source.c_str());
+                remove_dir(name);
+                sleep(2);
+            }
+            if(command == "rm")
+            {
+                string source;
+                cin>>source;
+                c = kbget();
+                char name[2048];
+                strcpy(name, source.c_str());
+                removefile(name);
+                sleep(2);
+            }
+            if(command == "mv")
+            {
+                string source, dest;
+                cin>>source;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                char sname[2048], dname[2048];
+                strcpy(sname, source.c_str());
+                strcpy(dname, dest.c_str());
+                movefile(sname, dname);
+                sleep(2);
+            }
+            if(command == "mv-r")
+            {
+                string source, dest;
+                cin>>source;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                char sname[2048], dname[2048];
+                strcpy(sname, source.c_str());
+                strcpy(dname, dest.c_str());
+                move_dir(sname, dname);
+                sleep(2);
+            }
+            if(command == "quit")
+                return 0;
+
+            DirList.clear();
+            DirList = ls_dir_wrapper(curdir);
+            position = 0;
             cursorup(DirList.size());
             continue;
         }

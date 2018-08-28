@@ -13,7 +13,7 @@ struct FS
     std::string FName;
 };
 
-void ls_subtree(char *dir, int depth);
+void ls_subtree(std::string dir);
 
 void permission_str(struct stat filestat, char* perm);
 

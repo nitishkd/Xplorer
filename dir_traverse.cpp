@@ -20,30 +20,37 @@ bool comparator(FS a, FS b)
 }
 
 
-void ls_subtree(char *dir, int depth)
+void ls_subtree(string dir)
 {
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
-    if((dp = opendir(dir)) == NULL) 
+    if((dp = opendir(dir.c_str())) == NULL) 
     {
-        fprintf(stderr,"cannot open directory: %s\n", dir);
+        //fprintf(stderr,"cannot open directory: %s\n", dir);
         return;
     }
-    
-    chdir(dir);
+    vector<string> fname;   
+    chdir(dir.c_str());
     while((entry = readdir(dp)) != NULL) 
     {
         lstat(entry->d_name,&statbuf);
+        string name = entry->d_name;
         if(S_ISDIR(statbuf.st_mode)) 
         {
             if(strcmp(".",entry->d_name) == 0 || strcmp("..",entry->d_name) == 0)
                 continue;
-            printf("%*s%s/\n",depth,"",entry->d_name);
-            ls_subtree(entry->d_name,depth+4);
+            fname.push_back(name);
+            ls_subtree(name);
         }
-        else printf("%*s%s\n",depth,"",entry->d_name);
+        else
+            fname.push_back(name);
     }
+    cout<<dir<<endl;
+    for(int i =0; i < fname.size(); ++i)
+        printf("%10s ", fname[i].c_str());
+    printf("\n");
+    printf("\n");
     chdir("..");
     closedir(dp);
 }

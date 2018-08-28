@@ -88,11 +88,9 @@ void copy_dir_wrapper(char* source, char* dest)
 			break;
 	}
 	char dirname[n-i];
-	for(int j = i+1; j < n; ++j)
+	for(int j = i+1; j <= n; ++j)
 		dirname[j-i-1] = source[j];
-
-	char* mdir;
-	mdir = (char *)malloc(strlen(dest)+1+1+strlen(dirname));
+	char mdir[2048];
 	strcpy(mdir, dest);
 	strcat(mdir, "/");
 	strcat(mdir, dirname);
