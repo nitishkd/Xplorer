@@ -144,3 +144,13 @@ void display_window(vector<FS> Listdir, int start, int end)
         printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
     
 }
+
+void display_search_result(string pattern,vector<pair<string,string> > Listdir, int start, int end)
+{
+    clear_util();
+    cout<<"Search Results for pattern : "<<pattern<<endl;
+    for(int i = start; i <= end; ++i)
+        printf("%s       %.40s \n", Listdir[i].first.c_str(), Listdir[i].second.c_str());
+    
+}
+

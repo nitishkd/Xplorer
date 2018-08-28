@@ -141,3 +141,43 @@ void move_dir(char* source, char* dest)
 	copy_dir_wrapper(source, dest);
 	remove_dir(source);
 }
+
+void search(string dir, vector<pair<string,string> > &fname,string parent)
+{
+	DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+    if((dp = opendir(dir.c_str())) == NULL) 
+        return;
+    
+    chdir(dir.c_str());
+    while((entry = readdir(dp)) != NULL) 
+    {
+        lstat(entry->d_name,&statbuf);
+        string name = entry->d_name;
+        if(S_ISDIR(statbuf.st_mode)) 
+        {
+            if(strcmp(".",entry->d_name) == 0 || strcmp("..",entry->d_name) == 0)
+                continue;
+            fname.push_back({name,parent});
+            search(name,fname,parent+"/"+name);
+        }
+        else
+            fname.push_back({name,parent});
+    }
+	chdir("..");
+    closedir(dp);
+
+}
+
+vector<pair<string,string> > search_util(string pattern, string dir)
+{
+	vector<pair<string,string> > fname,resList;
+	search(dir, fname, dir);
+	for(int i =0; i < fname.size(); ++i)
+	{
+		if(fname[i].first.find(pattern) != std::string::npos)
+			resList.push_back(fname[i]);
+	}
+	return resList;
+}

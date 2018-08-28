@@ -273,7 +273,85 @@ int main()
             }
             else if(command == "search")
             {
-                //TODO
+                string pattern;
+                cin>>pattern;
+                c = kbget();
+                ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+                nrow = w.ws_row;
+                ncol = w.ws_col;
+                vector<pair<string,string> > Vec = search_util(pattern, cur_path);
+                display_search_result(pattern, Vec, 0, min((int)Vec.size()-1, nrow-4));
+                int tposition=0,tstart=0, tend=min((int)Vec.size()-1, nrow-4);
+                cursorup(tend - tstart +1);
+                while(true)
+                {
+                    c = kbget();
+                    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+                    nrow = w.ws_row;
+                    ncol = w.ws_col;
+                    //cout<<nrow<<" "<<ncol<<endl;
+                    if(c == KEY_UP and tposition > 0)
+                    {
+                        if(tposition <= tstart)
+                        {
+                            --tstart;
+                            --tposition;
+                            --tend;
+                            display_search_result(pattern, Vec, tstart, tend);
+                            cursorup(tend-tstart+1);
+                            continue;
+                        }
+                        --tposition;
+                        cursorup(1);
+                        continue;
+                    }
+                    if(c == KEY_DOWN and tposition < Vec.size()-1)
+                    {
+                        if(tposition >= tend)
+                        {
+                            ++tstart;
+                            ++tend;
+                            ++tposition;
+                            display_search_result(pattern, Vec, tstart, tend);
+                            cursorup(1);
+                            continue;
+                        }
+                        ++tposition;
+                        cursordown(1);
+                        continue;
+                    }
+                    if(c == KEY_ENTER)
+                    {
+                        struct stat statbuf;
+                        pair<string,string> T = Vec[tposition];
+                        string filename = T.second + "/" + T.first;
+                        lstat(filename.c_str(),&statbuf);
+                        if(S_ISDIR(statbuf.st_mode))
+                        {
+                            STB.push(curdir);
+                            DirList.clear();
+                            string fname = filename;
+                            cur_path = filename;
+                            curdir = filename;
+                            break;
+                        }
+                        else
+                        {
+                            int pid = fork();
+                            if (pid == 0)
+                            {
+                                execl("/usr/bin/xdg-open", "xdg-open", filename.c_str(), (char *)0);
+                                exit(1);
+                            }
+                        }
+                        continue;
+                        
+                    }
+                    if(c == 127 or c == KEY_LEFT)
+                        break;
+                    
+                }
+
             }
             else if(command == "quit")
                 return 0;
