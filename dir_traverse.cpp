@@ -9,13 +9,14 @@
 #include <vector>
 #include <string>
 #include "dir_traverse.h"
+#include "screen_man.h"
 #include <bits/stdc++.h>
 using namespace std;
 
 
 bool comparator(FS a, FS b)
 {
-    return (strcmp(a.FName ,b.FName) < 0 );
+    a.FName < b.FName;
 }
 
 
@@ -63,60 +64,59 @@ void permission_str(struct stat filestat, char* perm)
 
 }
 
-
-vector<FS> ls_dir(char* dir)
+vector<FS> ls_dir(string dir)
 {
     vector<FS> Dirlist;
+
     DIR *dp;
     struct dirent *entry;
     struct stat statbuf;
-    if((dp = opendir(dir)) == NULL) 
+    if((dp = opendir(dir.c_str())) == NULL) 
     {
         fprintf(stderr,"cannot open directory: %s\n", dir);
         return Dirlist;
     }
-    
-    chdir(dir);
+    cout<<dir<<endl;
+    chdir(dir.c_str());
+
     while((entry = readdir(dp)) != NULL) 
     {
-        char date[10];
         lstat(entry->d_name,&statbuf);
+        if(S_ISDIR(statbuf.st_mode))
+        {
+            if((strcmp(".",entry->d_name) == 0) or (strcmp("..",entry->d_name) == 0))
+                continue;
+        }
+
+        char date[15];
         strftime(date, 10, "%d-%m-%y", localtime(&(statbuf.st_ctime)));
-        char permission[11];
+        char permission[15];
         permission_str(statbuf, permission);
         struct passwd *pwd;
         pwd = getpwuid(statbuf.st_uid);
         FS dir_file;
-
-        dir_file.dateStr = (char*)malloc(strlen(date)+1);
-        strcpy(dir_file.dateStr, date);
-        
-        dir_file.permission = (char*)malloc(strlen(permission)+1);
-        strcpy(dir_file.permission, permission);
-
-        dir_file.u_name = (char*)malloc(strlen(pwd->pw_name)+1);
-        strcpy(dir_file.u_name, pwd->pw_name);
-
+        dir_file.dateStr = date;
+        dir_file.permission = permission;
+        dir_file.u_name = pwd->pw_name;
         dir_file.FileSize = statbuf.st_size;
         
-        dir_file.FName = (char*)malloc(strlen(entry->d_name)+1);
-        strcpy(dir_file.FName, entry->d_name);
+        dir_file.FName = entry->d_name;
 
         Dirlist.push_back(dir_file);
-        
+
     }
-    chdir("..");
     closedir(dp);
+    
     return Dirlist;
 }
 
-vector<FS> ls_dir_wrapper(char* source)
+vector<FS> ls_dir_wrapper(string source)
 {
+    clear_util();
     vector<FS> Listdir = ls_dir(source);
     sort(Listdir.begin(), Listdir.end(), comparator);
-
     for(int i = 0; i < Listdir.size(); ++i)
-        printf(" %s     %s      %s     %ld Bytes       %.30s\n",Listdir[i].permission, Listdir[i].u_name ,Listdir[i].dateStr, Listdir[i].FileSize, Listdir[i].FName);
+        printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
     
     return Listdir;
 }

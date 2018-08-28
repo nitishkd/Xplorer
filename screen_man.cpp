@@ -50,10 +50,10 @@ int kbesc(void)
             case 'B':
                 c = KEY_DOWN;
                 break;
-            case 'C':
+            case 'D':
                 c = KEY_LEFT;
                 break;
-            case 'D':
+            case 'C':
                 c = KEY_RIGHT;
                 break;
             default:

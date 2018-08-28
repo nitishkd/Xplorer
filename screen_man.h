@@ -9,7 +9,6 @@
 #define clearscr() printf("\033[H\033[J")
 #define clearprev() printf("\033[3J")
 
-
 #define KEY_ESCAPE  0x001b
 #define KEY_ENTER   0x000a
 #define KEY_UP      0x0105

@@ -6,19 +6,19 @@
 
 struct FS
 {
-    char* permission;
-    char* u_name;
-    char* dateStr;
+    std::string permission;
+    std::string u_name;
+    std::string dateStr;
     long FileSize;
-    char* FName;
+    std::string FName;
 };
 
 void ls_subtree(char *dir, int depth);
 
 void permission_str(struct stat filestat, char* perm);
 
-std::vector<FS> ls_dir(char* dir);
+std::vector<FS> ls_dir(std::string dir);
 
-std::vector<FS> ls_dir_wrapper(char* source);
+std::vector<FS> ls_dir_wrapper(std::string source);
 
 #endif
