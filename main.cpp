@@ -16,33 +16,59 @@ stack<string> STF, STB;
 
 int main()
 {
-    int c,nrow, ncol;
-    string cur_path = GetCurrentWorkingDir() ;
+    int c,nrow, ncol,start, end;
+    
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    nrow = w.ws_row;
+    ncol = w.ws_col;
+
+    string cur_path = GetCurrentWorkingDir();
     string homedir = cur_path;
     vector<FS> DirList = ls_dir_wrapper(cur_path);
-    int position = 0;    
-    cursorup(DirList.size());
+    int position = 0;
+    start = 0;    
+    end = min((int)DirList.size()-1, nrow-4);
+    cursorup(end - start +1);
     
     while (true)    
     {
 
         c = kbget();
-        struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
         nrow = w.ws_row;
         ncol = w.ws_col;
-
+        //cout<<nrow<<" "<<ncol<<endl;
         if(c == KEY_UP and position > 0)
         {
+            if(position <= start)
+            {
+                --start;
+                --position;
+                --end;
+                display_window(DirList, start, end);
+                cursorup(end-start+1);
+                continue;
+            }
             --position;
         	cursorup(1);
             continue;
         }
         if(c == KEY_DOWN and position < DirList.size()-1)
         {
+            if(position >= end)
+            {
+                ++start;
+                ++end;
+                ++position;
+                display_window(DirList, start, end);
+                cursorup(1);
+                continue;
+            }
             ++position;
-        	cursordown(1);
+            cursordown(1);
             continue;
+            
         }
         if(c == KEY_ENTER)
         {
@@ -59,7 +85,10 @@ int main()
                 cur_path = fname;
                 DirList = ls_dir_wrapper(fname);
                 position = 0;
-                cursorup(DirList.size());
+                start = 0;
+                end = min((int)DirList.size()-1, nrow-4);
+                cursorup(end - start +1 );
+                
             }
             else
             {
@@ -87,7 +116,9 @@ int main()
                 DirList.clear();
                 DirList = ls_dir_wrapper(fname);
                 position = 0;
-                cursorup(DirList.size());
+                start = 0;
+                end = min((int)DirList.size()-1, nrow-4);
+                cursorup(end - start +1 );
             }
             continue;
         }
@@ -102,7 +133,9 @@ int main()
                 DirList.clear();
                 DirList = ls_dir_wrapper(fname);
                 position = 0;
-                cursorup(DirList.size());    
+                start = 0;
+                end = min((int)DirList.size()-1, nrow-4);
+                cursorup(end - start +1 );   
             }
             continue;
         }
@@ -115,7 +148,10 @@ int main()
             DirList.clear();
             DirList = ls_dir_wrapper(fname);
             cur_path = homedir;
-            cursorup(DirList.size());
+            position = 0;
+            start = 0;
+            end = min((int)DirList.size()-1, nrow-4);
+            cursorup(end - start +1 );
             continue;
         }
         if(c == 127)
@@ -128,7 +164,10 @@ int main()
             DirList.clear();
             DirList = ls_dir_wrapper(fname);
             cur_path = GetCurrentWorkingDir();
-            cursorup(DirList.size());
+            position = 0;
+            start = 0;
+            end = min((int)DirList.size()-1, nrow-4);
+            cursorup(end - start +1 );
             continue;
         }
         if(c == 58)
@@ -222,7 +261,9 @@ int main()
             DirList.clear();
             DirList = ls_dir_wrapper(curdir);
             position = 0;
-            cursorup(DirList.size());
+            start = 0;
+            end = min((int)DirList.size()-1, nrow-4);
+            cursorup(end - start +1 );
             continue;
         }
 

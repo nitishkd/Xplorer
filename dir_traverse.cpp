@@ -8,6 +8,7 @@
 #include <pwd.h>
 #include <vector>
 #include <string>
+#include <sys/ioctl.h>
 #include "dir_traverse.h"
 #include "screen_man.h"
 #include <bits/stdc++.h>
@@ -125,13 +126,21 @@ vector<FS> ls_dir(string dir)
 
 vector<FS> ls_dir_wrapper(string source)
 {
-    clear_util();
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    int nrow = w.ws_row;
+    int ncol = w.ws_col;
     vector<FS> Listdir = ls_dir(source);
     sort(Listdir.begin(), Listdir.end(), comparator);
-    printf("%s \n", GetCurrentWorkingDir().c_str());
-    for(int i = 0; i < Listdir.size(); ++i)
-        printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
-    
+    display_window(Listdir, 0, min((int)Listdir.size()-1, nrow-4));
     return Listdir;
 }
 
+void display_window(vector<FS> Listdir, int start, int end)
+{
+    clear_util();
+    printf("%s \n", GetCurrentWorkingDir().c_str());
+    for(int i = start; i <= end; ++i)
+        printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
+    
+}
