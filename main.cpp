@@ -12,6 +12,30 @@ using namespace std;
 
 stack<string> STF, STB;
 
+vector<string> split(std::string &txt, char ch)
+{
+    size_t pos = txt.find( ch );
+    size_t initialPos = 0;
+    vector<string>strs;
+    while( pos != std::string::npos ) {
+        strs.push_back( txt.substr( initialPos, pos - initialPos ) );
+        initialPos = pos + 1;
+
+        pos = txt.find( ch, initialPos );
+    }
+
+    strs.push_back( txt.substr( initialPos, std::min( pos, txt.size() ) - initialPos + 1 ) );
+
+    return strs;
+}
+
+
+string filename(string path)
+{
+    vector<string> V = split(path, '/');
+    return V[V.size()-1];
+}
+
 #define debug(x) printf("Checkpoint %d \n", x )
 
 int main()
@@ -201,15 +225,26 @@ int main()
             }
             else if(command == "cp")
             {
-                string source, dest;
-                cin>>source;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
-                char sname[2048], dname[2048];
-                strcpy(sname, source.c_str());
-                strcpy(dname, dest.c_str());
-                copyfile(sname, dname);
+                string source,text, dest;
+                getline(cin,text);
+                //c = kbget();
+
+                std::istringstream iss(text);
+                std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                 std::istream_iterator<std::string>());
+                dest = results[results.size()-1];
+                dest += "/";
+                for(int i = 0; i < results.size()-1; ++i)
+                {
+                    source = results[i];
+                    string fname = filename(source);
+                    string tdest = dest + fname;
+                    char sname[2048], dname[2048];
+                    strcpy(sname, source.c_str());
+                    strcpy(dname, tdest.c_str());
+                    copyfile(sname, dname);
+                    
+                }
                 sleep(2);
             }
             else if(command == "cp-r")
