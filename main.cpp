@@ -282,16 +282,28 @@ int main()
             }
             else if(command == "mv")
             {
-                string source, dest;
-                cin>>source;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
-                char sname[2048], dname[2048];
-                strcpy(sname, source.c_str());
-                strcpy(dname, dest.c_str());
-                movefile(sname, dname);
+                string source,text, dest;
+                getline(cin,text);
+                //c = kbget();
+
+                std::istringstream iss(text);
+                std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                 std::istream_iterator<std::string>());
+                dest = results[results.size()-1];
+                dest += "/";
+                for(int i = 0; i < results.size()-1; ++i)
+                {
+                    source = results[i];
+                    string fname = filename(source);
+                    string tdest = dest + fname;
+                    char sname[2048], dname[2048];
+                    strcpy(sname, source.c_str());
+                    strcpy(dname, tdest.c_str());
+                    movefile(sname, dname);
+                    
+                }
                 sleep(2);
+                
             }
             else if(command == "mv-r")
             {
