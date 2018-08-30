@@ -211,7 +211,11 @@ int main()
                 c = kbget();
                 cin>>fname;
                 c = kbget();
-                folder = homedir + "/" + folder;
+                if(folder[0] == '/')
+                    folder = homedir + folder;
+                else 
+                    folder = homedir + "/" + folder;
+                
                 name = folder+"/"+fname;
                 fstream file;
                 file.open(name.c_str(), ios::out);
@@ -235,7 +239,13 @@ int main()
                 if(source == "/")
                     source = homedir;
                 else
-                    source = homedir + "/" + source;
+                {
+                    if(source[0] == '/')
+                        source = homedir + source;
+                    else
+                        source = homedir + "/" + source;
+                }
+                    
                 curdir = source;
             }
             else if(command == "create_file")
@@ -326,6 +336,15 @@ int main()
                 c = kbget();
                 cin>>dest;
                 c = kbget();
+                if(source[0] == '/')
+                    source = homedir + source;
+                else
+                    source = homedir + "/" + source;
+                if(dest[0] == '/')
+                    dest = homedir + dest;
+                else
+                    dest = homedir + "/" + dest;
+                    
                 char sname[2048], dname[2048];
                 strcpy(sname, source.c_str());
                 strcpy(dname, dest.c_str());
@@ -337,7 +356,11 @@ int main()
                 string source;
                 cin>>source;
                 c = kbget();
-                source = homedir + "/" + source;
+                if(source[0] == '/')
+                    source = homedir + source;
+                else
+                    source = homedir + "/" + source;
+                
                 char name[2048];
                 strcpy(name, source.c_str());
                 remove_dir(name);
@@ -348,7 +371,10 @@ int main()
                 string source;
                 cin>>source;
                 c = kbget();
-                source = homedir + "/" + source;
+                if(source[0] == '/')
+                    source = homedir + source;
+                else
+                    source = homedir + "/" + source;
                 char name[2048];
                 strcpy(name, source.c_str());
                 removefile(name);
@@ -396,6 +422,16 @@ int main()
                 c = kbget();
                 cin>>dest;
                 c = kbget();
+                if(source[0] == '/')
+                    source = homedir + source;
+                else
+                    source = homedir + "/" + source;
+                
+                if(dest[0] == '/')
+                    dest = homedir + dest;
+                else
+                    dest = homedir + "/" + dest;
+                 
                 char sname[2048], dname[2048];
                 strcpy(sname, source.c_str());
                 strcpy(dname, dest.c_str());
