@@ -307,7 +307,7 @@ int main()
                 mkdir(dest.c_str(), 0777);
                 sleep(2);
             }
-            else if(command == "cp")
+            else if(command == "copy")
             {
                 string source,text, dest;
                 getline(cin,text);
@@ -341,7 +341,7 @@ int main()
                 }
                 sleep(2);
             }
-            else if(command == "cp-r")
+            else if(command == "copy_dir")
             {
                 string source, dest;
                 cin>>source;
@@ -363,7 +363,7 @@ int main()
                 copy_dir_wrapper(sname, dname);
                 sleep(2);
             }
-            else if(command == "rm-r")
+            else if(command == "delete_dir")
             {
                 string source;
                 cin>>source;
@@ -378,7 +378,7 @@ int main()
                 remove_dir(name);
                 sleep(2);
             }
-            else if(command == "rm")
+            else if(command == "delete_file")
             {
                 string source;
                 cin>>source;
@@ -392,7 +392,7 @@ int main()
                 removefile(name);
                 sleep(2);
             }
-            else if(command == "mv")
+            else if(command == "move_file")
             {
                 string source,text, dest;
                 getline(cin,text);
@@ -427,7 +427,7 @@ int main()
                 sleep(2);
                 
             }
-            else if(command == "mv-r")
+            else if(command == "move_dir")
             {
                 string source, dest;
                 cin>>source;
