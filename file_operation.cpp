@@ -18,7 +18,12 @@ void copyfile(char* filename, char* outfilename )
 		write(out, block,nread);
 		
 }
-
+void createfile(char* filename)
+{
+	fstream fs;
+	fs.open(filename, ios::out);
+	fs.close();
+}
 int removefile(char* filename)
 {
 	int status = remove(filename);

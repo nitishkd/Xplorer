@@ -225,6 +225,53 @@ int main()
                 sleep(5);
                 
             }
+            else if(command == "create_file")
+            {
+                //TODO
+                string filename,dest;
+                cin>>filename;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                if(dest == ".")
+                    dest = GetCurrentWorkingDir();
+                else if(dest[0] == '~')
+                {
+                    string tmp = homedir;
+                    for(int i =1; i < dest.length(); ++i)
+                        tmp += dest[i];
+                    dest = tmp;
+                    dest += "/";
+                }
+                dest += filename;
+                char name[2018];
+                strcpy(name, dest.c_str());
+                createfile(name);
+                sleep(2);
+            }
+            else if(command == "create_dir")
+            {
+                //TODO
+                string filename,dest;
+                cin>>filename;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+
+                if(dest == ".")
+                    dest = GetCurrentWorkingDir();
+                else if(dest[0] == '~')
+                {
+                    string tmp = homedir;
+                    for(int i =1; i < dest.length(); ++i)
+                        tmp += dest[i];
+                    dest = tmp;
+                    dest += "/";
+                }
+                dest += filename;
+                mkdir(dest.c_str(), 0777);
+                sleep(2);
+            }
             else if(command == "cp")
             {
                 string source,text, dest;

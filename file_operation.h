@@ -6,6 +6,8 @@ using namespace std;
 
 void copyfile(char* filename, char* outfilename );
 
+void createfile(char* filename);
+
 int removefile(char* filename);
 
 void movefile(char* source, char* destination);
