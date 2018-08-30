@@ -211,6 +211,7 @@ int main()
                 c = kbget();
                 cin>>fname;
                 c = kbget();
+                folder = homedir + "/" + folder;
                 name = folder+"/"+fname;
                 fstream file;
                 file.open(name.c_str(), ios::out);
