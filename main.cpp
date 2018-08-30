@@ -227,7 +227,6 @@ int main()
                 ls_subtree(folder);
                 cout.rdbuf(stream_buffer_cout);
                 file.close();
-                sleep(5);
                 
             }
             else if(command == "rename")
@@ -240,7 +239,6 @@ int main()
                 source = GetCurrentWorkingDir() + "/" + source;
                 dest = GetCurrentWorkingDir() + "/" + dest;
                 int status = rename(source.c_str(), dest.c_str());    
-                sleep(5);
             }
             else if(command == "goto")
             {
@@ -282,7 +280,6 @@ int main()
                 char name[2018];
                 strcpy(name, dest.c_str());
                 createfile(name);
-                sleep(2);
             }
             else if(command == "create_dir")
             {
@@ -305,7 +302,6 @@ int main()
                 }
                 dest += filename;
                 mkdir(dest.c_str(), 0777);
-                sleep(2);
             }
             else if(command == "copy")
             {
@@ -339,7 +335,6 @@ int main()
                     copyfile(sname, dname);
                     
                 }
-                sleep(2);
             }
             else if(command == "copy_dir")
             {
@@ -361,7 +356,6 @@ int main()
                 strcpy(sname, source.c_str());
                 strcpy(dname, dest.c_str());
                 copy_dir_wrapper(sname, dname);
-                sleep(2);
             }
             else if(command == "delete_dir")
             {
@@ -376,7 +370,6 @@ int main()
                 char name[2048];
                 strcpy(name, source.c_str());
                 remove_dir(name);
-                sleep(2);
             }
             else if(command == "delete_file")
             {
@@ -390,7 +383,6 @@ int main()
                 char name[2048];
                 strcpy(name, source.c_str());
                 removefile(name);
-                sleep(2);
             }
             else if(command == "move_file")
             {
@@ -424,7 +416,6 @@ int main()
                     movefile(sname, dname);
                     
                 }
-                sleep(2);
                 
             }
             else if(command == "move_dir")
@@ -448,7 +439,6 @@ int main()
                 strcpy(sname, source.c_str());
                 strcpy(dname, dest.c_str());
                 move_dir(sname, dname);
-                sleep(2);
             }
             else if(command == "search")
             {
