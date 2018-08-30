@@ -235,11 +235,21 @@ int main()
                 std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                  std::istream_iterator<std::string>());
                 dest = results[results.size()-1];
+                if(dest[0] == '~')
+                {
+                    string tmp = homedir;
+                    for(int i =1; i < dest.length(); ++i)
+                        tmp += dest[i];
+                    dest = tmp;
+                }
                 dest += "/";
                 for(int i = 0; i < results.size()-1; ++i)
                 {
+                    string path = GetCurrentWorkingDir();
+                    path += "/"; 
                     source = results[i];
                     string fname = filename(source);
+                    source = path + source;
                     string tdest = dest + fname;
                     char sname[2048], dname[2048];
                     strcpy(sname, source.c_str());
@@ -292,11 +302,21 @@ int main()
                 std::vector<std::string> results(std::istream_iterator<std::string>{iss},
                                  std::istream_iterator<std::string>());
                 dest = results[results.size()-1];
+                if(dest[0] == '~')
+                {
+                    string tmp = homedir;
+                    for(int i =1; i < dest.length(); ++i)
+                        tmp += dest[i];
+                    dest = tmp;
+                }
                 dest += "/";
                 for(int i = 0; i < results.size()-1; ++i)
                 {
+                    string path = GetCurrentWorkingDir();
+                    path += "/"; 
                     source = results[i];
                     string fname = filename(source);
+                    source = path + source;
                     string tdest = dest + fname;
                     char sname[2048], dname[2048];
                     strcpy(sname, source.c_str());
