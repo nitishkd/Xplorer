@@ -198,7 +198,7 @@ int main()
         }
         if(c == 58)
         {
-            cursordown(nrow);
+            cursordown(nrow-2);
             cout<<":";
             string command;
             cin>>command;
