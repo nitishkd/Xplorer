@@ -140,17 +140,27 @@ void display_window(vector<FS> Listdir, int start, int end)
 {
     clear_util();
     printf("%s \n", GetCurrentWorkingDir().c_str());
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    int nrow = w.ws_row;
+    int ncol = w.ws_col;
+    int cols = max(0, ncol - 55);
     for(int i = start; i <= end; ++i)
-        printf(" %12s     %10s      %10s     %10ld Bytes       %15s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize, Listdir[i].FName.c_str());
+        printf(" %12s%10s%10s%10ld Bytes    %.*s\n",Listdir[i].permission.c_str(), Listdir[i].u_name.c_str() ,Listdir[i].dateStr.c_str(), Listdir[i].FileSize,cols, Listdir[i].FName.c_str());
     
 }
 
 void display_search_result(string pattern,vector<pair<string,string> > Listdir, int start, int end)
 {
     clear_util();
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    int nrow = w.ws_row;
+    int ncol = w.ws_col;
+    int cols = max(0, ncol - 40);
     cout<<"Search Results for pattern : "<<pattern<<endl;
     for(int i = start; i <= end; ++i)
-        printf("%s       %.40s \n", Listdir[i].first.c_str(), Listdir[i].second.c_str());
+        printf("%.30s       %.*s \n", Listdir[i].first.c_str(),cols, Listdir[i].second.c_str());
     
 }
 

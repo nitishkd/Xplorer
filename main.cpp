@@ -230,6 +230,18 @@ int main()
                 sleep(5);
                 
             }
+            else if(command == "rename")
+            {
+                string source,dest;
+                cin>>source;
+                c = kbget();
+                cin>>dest;
+                c = kbget();
+                source = GetCurrentWorkingDir() + "/" + source;
+                dest = GetCurrentWorkingDir() + "/" + dest;
+                int status = rename(source.c_str(), dest.c_str());    
+                sleep(5);
+            }
             else if(command == "goto")
             {
                 string source;
