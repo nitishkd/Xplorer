@@ -19,9 +19,9 @@ std::string GetCurrentWorkingDir();
 
 void permission_str(struct stat filestat, char* perm);
 
-std::vector<FS> ls_dir(std::string dir);
+std::vector<FS> ls_dir(std::string dir, string root);
 
-std::vector<FS> ls_dir_wrapper(std::string source);
+std::vector<FS> ls_dir_wrapper(std::string source, string root);
 
 void display_window(std::vector<FS> Listdir, int start, int end);
 

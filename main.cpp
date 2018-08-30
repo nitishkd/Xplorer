@@ -49,7 +49,7 @@ int main()
 
     string cur_path = GetCurrentWorkingDir();
     string homedir = cur_path;
-    vector<FS> DirList = ls_dir_wrapper(cur_path);
+    vector<FS> DirList = ls_dir_wrapper(cur_path,homedir);
     int position = 0;
     start = 0;    
     end = min((int)DirList.size()-1, nrow-4);
@@ -101,13 +101,15 @@ int main()
             lstat(T.FName.c_str(),&statbuf);
             if(S_ISDIR(statbuf.st_mode))
             {
+                if(T.FName == ".." and GetCurrentWorkingDir() == homedir)
+                    continue;
                 STB.push(cur_path);
                 DirList.clear();
                 string fname = GetCurrentWorkingDir();
                 fname += "/";
                 fname += T.FName;
                 cur_path = fname;
-                DirList = ls_dir_wrapper(fname);
+                DirList = ls_dir_wrapper(fname,homedir);
                 position = 0;
                 start = 0;
                 end = min((int)DirList.size()-1, nrow-4);
@@ -138,7 +140,7 @@ int main()
                 STF.push(GetCurrentWorkingDir());
                 cur_path = fname;
                 DirList.clear();
-                DirList = ls_dir_wrapper(fname);
+                DirList = ls_dir_wrapper(fname,homedir);
                 position = 0;
                 start = 0;
                 end = min((int)DirList.size()-1, nrow-4);
@@ -155,7 +157,7 @@ int main()
                 STB.push(GetCurrentWorkingDir());
                 cur_path = fname;
                 DirList.clear();
-                DirList = ls_dir_wrapper(fname);
+                DirList = ls_dir_wrapper(fname,homedir);
                 position = 0;
                 start = 0;
                 end = min((int)DirList.size()-1, nrow-4);
@@ -170,7 +172,7 @@ int main()
             while(!STF.empty())
                 STF.pop();
             DirList.clear();
-            DirList = ls_dir_wrapper(fname);
+            DirList = ls_dir_wrapper(fname,homedir);
             cur_path = homedir;
             position = 0;
             start = 0;
@@ -186,7 +188,7 @@ int main()
             STB.push(fname);
             fname += "/..";
             DirList.clear();
-            DirList = ls_dir_wrapper(fname);
+            DirList = ls_dir_wrapper(fname,homedir);
             cur_path = GetCurrentWorkingDir();
             position = 0;
             start = 0;
@@ -404,7 +406,7 @@ int main()
                 return 0;
 
             DirList.clear();
-            DirList = ls_dir_wrapper(curdir);
+            DirList = ls_dir_wrapper(curdir,homedir);
             position = 0;
             start = 0;
             end = min((int)DirList.size()-1, nrow-4);

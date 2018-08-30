@@ -79,7 +79,7 @@ void permission_str(struct stat filestat, char* perm)
 
 }
 
-vector<FS> ls_dir(string dir)
+vector<FS> ls_dir(string dir,string root)
 {
     vector<FS> Dirlist;
 
@@ -98,7 +98,7 @@ vector<FS> ls_dir(string dir)
         lstat(entry->d_name,&statbuf);
         if(S_ISDIR(statbuf.st_mode))
         {
-            if((strcmp(".",entry->d_name) == 0) or (strcmp("..",entry->d_name) == 0))
+            if(((strcmp(".",entry->d_name) == 0) or (strcmp("..",entry->d_name) == 0)) and (GetCurrentWorkingDir() == root))
                 continue;
         }
 
@@ -124,13 +124,13 @@ vector<FS> ls_dir(string dir)
     return Dirlist;
 }
 
-vector<FS> ls_dir_wrapper(string source)
+vector<FS> ls_dir_wrapper(string source,string root)
 {
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     int nrow = w.ws_row;
     int ncol = w.ws_col;
-    vector<FS> Listdir = ls_dir(source);
+    vector<FS> Listdir = ls_dir(source,root);
     sort(Listdir.begin(), Listdir.end(), comparator);
     display_window(Listdir, 0, min((int)Listdir.size()-1, nrow-4));
     return Listdir;
