@@ -225,6 +225,18 @@ int main()
                 sleep(5);
                 
             }
+            else if(command == "goto")
+            {
+                string source;
+                cin>>source;
+                c = kbget();
+                STB.push(GetCurrentWorkingDir());
+                if(source == "/")
+                    source = homedir;
+                else
+                    source = homedir + "/" + source;
+                curdir = source;
+            }
             else if(command == "create_file")
             {
                 //TODO
@@ -324,6 +336,7 @@ int main()
                 string source;
                 cin>>source;
                 c = kbget();
+                source = homedir + "/" + source;
                 char name[2048];
                 strcpy(name, source.c_str());
                 remove_dir(name);
@@ -334,6 +347,7 @@ int main()
                 string source;
                 cin>>source;
                 c = kbget();
+                source = homedir + "/" + source;
                 char name[2048];
                 strcpy(name, source.c_str());
                 removefile(name);
