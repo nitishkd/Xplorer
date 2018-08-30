@@ -139,7 +139,7 @@ vector<FS> ls_dir_wrapper(string source,string root)
 void display_window(vector<FS> Listdir, int start, int end)
 {
     clear_util();
-    printf("%s \n", GetCurrentWorkingDir().c_str());
+    printf("\u001b[7m\u001b[36m %s \u001b[0m \u001b[0m\n", GetCurrentWorkingDir().c_str());
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     int nrow = w.ws_row;
@@ -158,7 +158,7 @@ void display_search_result(string pattern,vector<pair<string,string> > Listdir, 
     int nrow = w.ws_row;
     int ncol = w.ws_col;
     int cols = max(0, ncol - 40);
-    cout<<"Search Results for pattern : "<<pattern<<endl;
+    printf("\u001b[7m\u001b[36m Search Results for pattern : %s \u001b[0m \u001b[0m\n", pattern.c_str());
     for(int i = start; i <= end; ++i)
         printf("%.30s       %.*s \n", Listdir[i].first.c_str(),cols, Listdir[i].second.c_str());
     
