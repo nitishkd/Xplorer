@@ -255,7 +255,7 @@ int main()
                     else
                         source = homedir + "/" + source;
                 }
-                    
+                
                 curdir = source;
             }
             else if(command == "create_file")
@@ -274,6 +274,15 @@ int main()
                     for(int i =1; i < dest.length(); ++i)
                         tmp += dest[i];
                     dest = tmp;
+                    dest += "/";
+                }
+                else
+                {
+                    if(dest[0] == '/')
+                        dest = homedir + dest;
+                    else 
+                        dest = homedir + "/" + dest;
+
                     dest += "/";
                 }
                 dest += filename;
@@ -300,10 +309,19 @@ int main()
                     dest = tmp;
                     dest += "/";
                 }
+                else
+                {
+                    if(dest[0] == '/')
+                        dest = homedir + dest;
+                    else 
+                        dest = homedir + "/" + dest;
+
+                    dest += "/";
+                }
                 dest += filename;
                 mkdir(dest.c_str(), 0777);
             }
-            else if(command == "copy")
+            else if(command == "copy_file")
             {
                 string source,text, dest;
                 getline(cin,text);
@@ -319,6 +337,13 @@ int main()
                     for(int i =1; i < dest.length(); ++i)
                         tmp += dest[i];
                     dest = tmp;
+                }
+                else
+                {
+                    if(dest[0] == '/')
+                        dest = homedir + dest;
+                    else 
+                        dest = homedir + "/" + dest;
                 }
                 dest += "/";
                 for(int i = 0; i < results.size()-1; ++i)
@@ -400,6 +425,13 @@ int main()
                     for(int i =1; i < dest.length(); ++i)
                         tmp += dest[i];
                     dest = tmp;
+                }
+                else
+                {
+                    if(dest[0] == '/')
+                        dest = homedir + dest;
+                    else 
+                        dest = homedir + "/" + dest;
                 }
                 dest += "/";
                 for(int i = 0; i < results.size()-1; ++i)
@@ -525,8 +557,14 @@ int main()
             else if(command == "quit")
                 return 0;
 
+            string temp = GetCurrentWorkingDir();
             DirList.clear();
             DirList = ls_dir_wrapper(curdir,homedir);
+            if(DirList.size() == 0)
+            {
+                curdir = temp;
+                DirList = ls_dir_wrapper(curdir,homedir);    
+            }
             position = 0;
             start = 0;
             end = min((int)DirList.size()-1, nrow-4);
