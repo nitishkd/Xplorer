@@ -58,7 +58,7 @@ List of commands are as follow:
 8) ```copy_dir {source dir} {destination directory}``` : Copy a single directory. Destination address takes only absolute path wrt root . Source directory should be present in the current working directory. Copies single directory at a time.
   
       ```console
-           copy_dir foo ~/foobar
+           copy_dir foo /Downloads/foobar
       ```
 
 9) ```delete_file {filename}``` :Delete a file. Filename should be present with absoulte path wrt root.
