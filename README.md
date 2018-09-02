@@ -20,7 +20,7 @@ List of commands are as follow:
 2) ```search {pattern}``` : This command is used to search for a pattern in the subtree where user is present It lets user open files and traverse directory from there.
 
       ```console
-           search /Downloads 
+           search test.cpp 
       ```
  
  3) ```rename {oldfilename} {newfilename}``` : It renames the file if it is present in the current working directory.
@@ -55,7 +55,7 @@ List of commands are as follow:
            copy_file foo.txt bar.txt baz.mp4 ~/foobar
       ```
 
-8) ```copy_dir {source dir} {destination directory}``` : Copy a single directory. Destination address takes only absolute path wrt root . Source directory should be present in the current working directory. Copies single directory at a time.
+8) ```copy_dir {source dir} {destination directory}``` : Copy a single directory. Destination and Source Directory address takes only absolute path wrt root . Copies single directory at a time.
   
       ```console
            copy_dir foo /Downloads/foobar
@@ -79,10 +79,10 @@ List of commands are as follow:
            move_file foo.txt bar.txt baz.mp4 ~/foobar
       ```
 
-12) ```move_dir {source dir} {destination directory}``` : Moves a single directory. Destination address syntax is similar to specified in ```copy_dir``` command. Source directory should be present in the current working directory. Moves single directory at a time.
+12) ```move_dir {source dir} {destination directory}``` : Moves a single directory. Destination and Source address take absolute path wrt root. Source directory should be present in the current working directory. Moves single directory at a time.
   
       ```console
-           move_dir foo /Downloads/foobar
+           move_dir /foo /Downloads/foobar
       ```
 
 13) ```quit``` : Quits the application.
