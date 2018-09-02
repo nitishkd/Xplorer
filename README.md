@@ -82,11 +82,14 @@ List of commands are as follow:
 12) ```move_dir {source dir} {destination directory}``` : Moves a single directory. Destination address syntax is similar to specified in ```copy_dir``` command. Source directory should be present in the current working directory. Moves single directory at a time.
   
       ```console
-           move_dir foo ~/foobar
+           move_dir foo /Downloads/foobar
       ```
 
 13) ```quit``` : Quits the application.
-
+      
+      ```console
+           quit
+      ```
 
 
   
