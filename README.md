@@ -1,13 +1,34 @@
 # Xplorer
-Linux File Explorer
+**Linux File Explorer**
 
 This is assignment submission for the OS(PG) Course in session 2018-2019.
 User is expected to follow the syntax commands from the manual.
 
+**NORMAL MODE :** In normal mode, user can traverse using arrow keys.
+
+:arrow_up: : arrow up to move up in list.
+
+:arrow_down: : arrow down to move down the list.
+
+:arrow_right: : arrow right to move forward in directory traversal history.
+
+:arrow_left: : arrow left to move to previous visited directory.
+
+:arrow_backward: : backspace to move to parent directory of current directory
+
+:leftwards_arrow_with_hook: : Enter to open directory or files.
+
+
+* Minimum number of columns in the terminal is expected to greater that 60.
+
+
+**COMMAND MODE:**
+
 To enter in command mode, you need to press ```:```.  After the execution of command, it return back to normal mode. So, to enter another command again, press ```:``` again.
 
 For the instance of examples, lets consider the executable is present in ```/home/username``` . Thus, the root is ```/home/username```. 
-In every path, user is expected NOT to add ```/``` at the end of path.
+
+**NOTE** : In every path, user is expected NOT to add ```/``` at the end of path.
 
 List of commands are as follow:
  
