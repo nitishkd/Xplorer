@@ -11,9 +11,11 @@
 void copyfile(char* filename, char* outfilename )
 {
 	char block[1024];
+	struct stat statistics;
+	stat(filename, &statistics);
 	int in, out,nread;
 	in = open(filename, O_RDONLY);
-	out = open(outfilename, O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
+	out = open(outfilename, statistics.st_mode);
 	while((nread = read(in, block,sizeof(block))) > 0)
 		write(out, block,nread);
 		
