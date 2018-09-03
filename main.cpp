@@ -29,6 +29,34 @@ vector<string> split(std::string &txt, char ch)
     return strs;
 }
 
+vector<string> scanCommand(int pos)
+{
+    char ch;
+    vector<string> List;
+    string command = "";
+    while((ch = kbget()) != KEY_ENTER and ch != KEY_ESCAPE)
+    {
+        if(ch == 127)
+        {
+            command = command.substr(0,command.size()-1);
+            cout<<"\b";
+            cout<<"\e[0J";
+        }
+        else
+        {
+            command += ch;
+            cout<<ch;
+        }
+    }
+
+    if(ch == KEY_ESCAPE)
+    {
+        List.push_back("INF");
+        return List;
+    }
+    List = split(command, ' ');
+    return List;
+}
 
 string filename(string path)
 {
@@ -199,18 +227,19 @@ int main()
         if(c == 58)
         {
             cursordown(nrow-2);
-            cout<<":";
             string command;
-            cin>>command;
+            vector<string> List = scanCommand(nrow-2);
             string curdir = GetCurrentWorkingDir();
-            c = kbget();
-            if(command == "snapshot")
+            command = List[0];
+            if(command == "INF")
+            {
+                //do nothing.
+            }
+            else if(command == "snapshot")
             {
                 string folder,fname,name;
-                cin>>folder;
-                c = kbget();
-                cin>>fname;
-                c = kbget();
+                folder = List[1];
+                fname = List[2];
                 if(folder[0] == '/')
                     folder = homedir + folder;
                 else 
@@ -232,10 +261,8 @@ int main()
             else if(command == "rename")
             {
                 string source,dest;
-                cin>>source;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
+                source = List[1];
+                dest = List[2];
                 source = GetCurrentWorkingDir() + "/" + source;
                 dest = GetCurrentWorkingDir() + "/" + dest;
                 int status = rename(source.c_str(), dest.c_str());    
@@ -243,8 +270,7 @@ int main()
             else if(command == "goto")
             {
                 string source;
-                cin>>source;
-                c = kbget();
+                source = List[1];
                 STB.push(GetCurrentWorkingDir());
                 if(source == "/")
                     source = homedir;
@@ -262,10 +288,8 @@ int main()
             {
                 //TODO
                 string filename,dest;
-                cin>>filename;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
+                filename = List[1];
+                dest = List[2];
                 if(dest == ".")
                     dest = GetCurrentWorkingDir();
                 else if(dest[0] == '~')
@@ -294,11 +318,8 @@ int main()
             {
                 //TODO
                 string filename,dest;
-                cin>>filename;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
-
+                filename = List[1];
+                dest = List[2];
                 if(dest == ".")
                     dest = GetCurrentWorkingDir();
                 else if(dest[0] == '~')
@@ -324,13 +345,7 @@ int main()
             else if(command == "copy_file")
             {
                 string source,text, dest;
-                getline(cin,text);
-                //c = kbget();
-
-                std::istringstream iss(text);
-                std::vector<std::string> results(std::istream_iterator<std::string>{iss},
-                                 std::istream_iterator<std::string>());
-                dest = results[results.size()-1];
+                dest = List[List.size()-1];
                 if(dest[0] == '~')
                 {
                     string tmp = homedir;
@@ -346,11 +361,11 @@ int main()
                         dest = homedir + "/" + dest;
                 }
                 dest += "/";
-                for(int i = 0; i < results.size()-1; ++i)
+                for(int i = 1; i < List.size()-1; ++i)
                 {
                     string path = GetCurrentWorkingDir();
                     path += "/"; 
-                    source = results[i];
+                    source = List[i];
                     string fname = filename(source);
                     source = path + source;
                     string tdest = dest + fname;
@@ -364,10 +379,8 @@ int main()
             else if(command == "copy_dir")
             {
                 string source, dest;
-                cin>>source;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
+                source = List[1];
+                dest = List[2];
                 if(source[0] == '/')
                     source = homedir + source;
                 else
@@ -385,8 +398,7 @@ int main()
             else if(command == "delete_dir")
             {
                 string source;
-                cin>>source;
-                c = kbget();
+                source = List[1];
                 if(source[0] == '/')
                     source = homedir + source;
                 else
@@ -399,8 +411,7 @@ int main()
             else if(command == "delete_file")
             {
                 string source;
-                cin>>source;
-                c = kbget();
+                source = List[1];
                 if(source[0] == '/')
                     source = homedir + source;
                 else
@@ -412,13 +423,7 @@ int main()
             else if(command == "move_file")
             {
                 string source,text, dest;
-                getline(cin,text);
-                //c = kbget();
-
-                std::istringstream iss(text);
-                std::vector<std::string> results(std::istream_iterator<std::string>{iss},
-                                 std::istream_iterator<std::string>());
-                dest = results[results.size()-1];
+                dest = List[List.size()-1];
                 if(dest[0] == '~')
                 {
                     string tmp = homedir;
@@ -434,11 +439,11 @@ int main()
                         dest = homedir + "/" + dest;
                 }
                 dest += "/";
-                for(int i = 0; i < results.size()-1; ++i)
+                for(int i = 1; i < List.size()-1; ++i)
                 {
                     string path = GetCurrentWorkingDir();
                     path += "/"; 
-                    source = results[i];
+                    source = List[i];
                     string fname = filename(source);
                     source = path + source;
                     string tdest = dest + fname;
@@ -446,17 +451,15 @@ int main()
                     strcpy(sname, source.c_str());
                     strcpy(dname, tdest.c_str());
                     movefile(sname, dname);
-                    
+                
                 }
                 
             }
             else if(command == "move_dir")
             {
                 string source, dest;
-                cin>>source;
-                c = kbget();
-                cin>>dest;
-                c = kbget();
+                source = List[1];
+                dest = List[2];
                 if(source[0] == '/')
                     source = homedir + source;
                 else
@@ -475,8 +478,7 @@ int main()
             else if(command == "search")
             {
                 string pattern;
-                cin>>pattern;
-                c = kbget();
+                pattern = List[1];
                 ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
                 nrow = w.ws_row;
                 ncol = w.ws_col;
